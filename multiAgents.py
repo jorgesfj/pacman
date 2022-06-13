@@ -74,31 +74,32 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
-        #return successorGameState.getScore()
-        score = 0
+        
+        #Contador da pontuacao
+        points = 0
+        #Posicao do fantasma
+        posicaoFantasma = newGhostStates[0].configuration.pos
+        #fantasma mais perto
+        fantasma = manhattanDistance(newPos, posicaoFantasma)
 
-        # # Maximize distance from pacman to ghost
-        # newGhostPositions = successorGameState.getGhostPositions()
-        # ghostDistances = [manhattanDistance(newPos, ghostPosition) for ghostPosition in newGhostPositions]
-        # closestGhost = min(ghostDistances)
+        #posicao da comida
+        posicaoComida = newFood.asList()
+        #distancia da comida 
+        distanciaComida = [manhattanDistance(newPos, foodPosition) for foodPosition in posicaoComida]
 
-        closestGhostPosition = newGhostStates[0].configuration.pos
-        closestGhost = manhattanDistance(newPos, closestGhostPosition)
-
-        # Minimize distance from pacman to food
-        newFoodPositions = newFood.asList()
-        foodDistances = [manhattanDistance(newPos, foodPosition) for foodPosition in newFoodPositions]
-
-        if len(foodDistances) == 0:
+        #verificando se ainda tem comida
+        if len(distanciaComida) == 0:
+          #se nao tiver acaba
             return 0
 
-        closestFood = min(foodDistances)
+        #calculando a distancia ate a comida
+        comida = min(distanciaComida)
 
-        # Stop action would reduce score because of the pacman's timer constraint
+        # Acao de parar
         if action == 'Stop':
-            score -= 50
+            points -= 50
 
-        return successorGameState.getScore() + closestGhost/(closestFood * 10) + score
+        return successorGameState.getScore() + fantasma/(comida * 10) + points
 
 def scoreEvaluationFunction(currentGameState):
     """
