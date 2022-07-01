@@ -175,7 +175,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         
         # Min-agent: Fantasma index > 0
         else:
-            return self.min_value(gameState)
+            return self.min_value(gameState, index, depth)
 
     def max_value(self, gameState, index, depth):
         movimentosLegais = gameState.getLegalActions(index)
